@@ -1,0 +1,105 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/player/player_1.png" type="Texture" id=1]
+[ext_resource path="res://rsc/scripts/player.gd" type="Script" id=2]
+[ext_resource path="res://assets/player/player_2.png" type="Texture" id=3]
+[ext_resource path="res://assets/explosion.png" type="Texture" id=4]
+[ext_resource path="res://rsc/scripts/explosion.gd" type="Script" id=5]
+[ext_resource path="res://assets/player/move.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/fuel/fuel.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/player/explosion.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/player/hit.wav" type="AudioStream" id=9]
+
+[sub_resource type="CanvasItemMaterial" id=4]
+blend_mode = 1
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "skin_1",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "skin_2",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 15, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "explosion"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 15, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1 )
+}
+
+[node name="player" type="KinematicBody2D" groups=["player"]]
+position = Vector2( 200, 300 )
+scale = Vector2( 0.6, 0.6 )
+z_index = 1
+collision_mask = 17
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="hit_box" type="Area2D" parent="." groups=["to_rotate"]]
+
+[node name="collision_shape_2d" type="CollisionPolygon2D" parent="hit_box" groups=["to_rotate"]]
+polygon = PoolVector2Array( -43.3333, 26.6667, -16.6667, 43.3333, 0, 18.3333, 15, 43.3333, 43.3333, 26.6667, 0, -41.6667 )
+
+[node name="skin" type="AnimatedSprite" parent="." groups=["to_rotate"]]
+material = SubResource( 4 )
+frames = SubResource( 1 )
+animation = "skin_1"
+
+[node name="collision_polygon_2d" type="CollisionPolygon2D" parent="." groups=["to_rotate"]]
+position = Vector2( 0, 1 )
+polygon = PoolVector2Array( -43.3333, 25.6667, -16.6667, 42.3333, 0, 17.3333, 15, 42.3333, 43.3333, 25.6667, 0, -42.6667 )
+
+[node name="explosion" type="Sprite" parent="." groups=["to_rotate"]]
+visible = false
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+frame = 15
+script = ExtResource( 5 )
+
+[node name="animation_player" type="AnimationPlayer" parent="explosion"]
+anims/RESET = SubResource( 2 )
+anims/explosion = SubResource( 3 )
+
+[node name="move" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="fuel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="game_over" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[connection signal="area_entered" from="hit_box" to="." method="_on_hit_box_area_entered"]
+[connection signal="body_entered" from="hit_box" to="." method="_on_hit_box_body_entered"]

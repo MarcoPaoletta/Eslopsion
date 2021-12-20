@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Cold-Moon.mp3-40b8c854d5649a28e8cda2d3519c06e1.mp3str"
+
+[deps]
+
+source_file="res://assets/main/Cold-Moon.mp3"
+dest_files=[ "res://.import/Cold-Moon.mp3-40b8c854d5649a28e8cda2d3519c06e1.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
