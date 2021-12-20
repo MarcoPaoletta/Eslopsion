@@ -25,7 +25,7 @@ func change_skin():
 * Creamos un for en el rango de la cantidad de texturas que tenemos, en este caso 20
 * Agregamos cada textura a la lista del principio. En mi caso le sumo 1 cuando lo agrego porque mis texturas empiezan por el 1 y no por el 0
 * Creamos una variable que va a contener el tamaño de la lista y la usamos posteriormente para establecer la textura de nuestra skin en un sprite
-
+---
 # Descargar Godot Engine e importar el proyecto
 ---
 
